@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sojson.common.dao.LogMapper" >
+  <resultMap id="BaseResultMap" type="com.sojson.common.model.Log" >
+    <id column="ID" property="id" jdbcType="CHAR" />
+    <result column="APP_NAME" property="appName" jdbcType="CHAR" />
+    <result column="LOG_TYPE" property="logType" jdbcType="INTEGER" />
+    <result column="USER" property="user" jdbcType="VARCHAR" />
+    <result column="METHOD_NAME" property="methodName" jdbcType="VARCHAR" />
+    <result column="REQUEST_PARAMS" property="requestParams" jdbcType="VARCHAR" />
+    <result column="METHOD_DESCRIPTION" property="methodDescription" jdbcType="VARCHAR" />
+    <result column="REQUEST_IP" property="requestIp" jdbcType="VARCHAR" />
+    <result column="REQUEST_URI" property="requestUri" jdbcType="VARCHAR" />
+    <result column="REQUEST_PATH" property="requestPath" jdbcType="VARCHAR" />
+    <result column="EXCEPTION_CODE" property="exceptionCode" jdbcType="VARCHAR" />
+    <result column="EXCEPTION_DETAIL" property="exceptionDetail" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.sojson.common.model.Log" extends="BaseResultMap" >
+    <result column="CONTENT" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, APP_NAME, LOG_TYPE, USER, METHOD_NAME, REQUEST_PARAMS, METHOD_DESCRIPTION, REQUEST_IP, 
+    REQUEST_URI, REQUEST_PATH, EXCEPTION_CODE, EXCEPTION_DETAIL, CREATE_TIME, STATUS
+  </sql>
+  <sql id="Blob_Column_List" >
+    CONTENT
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from log
+    where ID = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from log
+    where ID = #{id,jdbcType=CHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.sojson.common.model.Log" >
+    insert into log (ID, APP_NAME, LOG_TYPE, 
+      USER, METHOD_NAME, REQUEST_PARAMS, 
+      METHOD_DESCRIPTION, REQUEST_IP, REQUEST_URI, 
+      REQUEST_PATH, EXCEPTION_CODE, EXCEPTION_DETAIL, 
+      CREATE_TIME, STATUS, CONTENT
+      )
+    values (#{id,jdbcType=CHAR}, #{appName,jdbcType=CHAR}, #{logType,jdbcType=INTEGER}, 
+      #{user,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, #{requestParams,jdbcType=VARCHAR}, 
+      #{methodDescription,jdbcType=VARCHAR}, #{requestIp,jdbcType=VARCHAR}, #{requestUri,jdbcType=VARCHAR}, 
+      #{requestPath,jdbcType=VARCHAR}, #{exceptionCode,jdbcType=VARCHAR}, #{exceptionDetail,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sojson.common.model.Log" >
+    insert into log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appName != null" >
+        APP_NAME,
+      </if>
+      <if test="logType != null" >
+        LOG_TYPE,
+      </if>
+      <if test="user != null" >
+        USER,
+      </if>
+      <if test="methodName != null" >
+        METHOD_NAME,
+      </if>
+      <if test="requestParams != null" >
+        REQUEST_PARAMS,
+      </if>
+      <if test="methodDescription != null" >
+        METHOD_DESCRIPTION,
+      </if>
+      <if test="requestIp != null" >
+        REQUEST_IP,
+      </if>
+      <if test="requestUri != null" >
+        REQUEST_URI,
+      </if>
+      <if test="requestPath != null" >
+        REQUEST_PATH,
+      </if>
+      <if test="exceptionCode != null" >
+        EXCEPTION_CODE,
+      </if>
+      <if test="exceptionDetail != null" >
+        EXCEPTION_DETAIL,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="content != null" >
+        CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="appName != null" >
+        #{appName,jdbcType=CHAR},
+      </if>
+      <if test="logType != null" >
+        #{logType,jdbcType=INTEGER},
+      </if>
+      <if test="user != null" >
+        #{user,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null" >
+        #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="requestParams != null" >
+        #{requestParams,jdbcType=VARCHAR},
+      </if>
+      <if test="methodDescription != null" >
+        #{methodDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="requestIp != null" >
+        #{requestIp,jdbcType=VARCHAR},
+      </if>
+      <if test="requestUri != null" >
+        #{requestUri,jdbcType=VARCHAR},
+      </if>
+      <if test="requestPath != null" >
+        #{requestPath,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionCode != null" >
+        #{exceptionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionDetail != null" >
+        #{exceptionDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update log
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=CHAR},
+      </if>
+      <if test="record.appName != null" >
+        APP_NAME = #{record.appName,jdbcType=CHAR},
+      </if>
+      <if test="record.logType != null" >
+        LOG_TYPE = #{record.logType,jdbcType=INTEGER},
+      </if>
+      <if test="record.user != null" >
+        USER = #{record.user,jdbcType=VARCHAR},
+      </if>
+      <if test="record.methodName != null" >
+        METHOD_NAME = #{record.methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestParams != null" >
+        REQUEST_PARAMS = #{record.requestParams,jdbcType=VARCHAR},
+      </if>
+      <if test="record.methodDescription != null" >
+        METHOD_DESCRIPTION = #{record.methodDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestIp != null" >
+        REQUEST_IP = #{record.requestIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestUri != null" >
+        REQUEST_URI = #{record.requestUri,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestPath != null" >
+        REQUEST_PATH = #{record.requestPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exceptionCode != null" >
+        EXCEPTION_CODE = #{record.exceptionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exceptionDetail != null" >
+        EXCEPTION_DETAIL = #{record.exceptionDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        CONTENT = #{record.content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update log
+    set ID = #{record.id,jdbcType=CHAR},
+      APP_NAME = #{record.appName,jdbcType=CHAR},
+      LOG_TYPE = #{record.logType,jdbcType=INTEGER},
+      USER = #{record.user,jdbcType=VARCHAR},
+      METHOD_NAME = #{record.methodName,jdbcType=VARCHAR},
+      REQUEST_PARAMS = #{record.requestParams,jdbcType=VARCHAR},
+      METHOD_DESCRIPTION = #{record.methodDescription,jdbcType=VARCHAR},
+      REQUEST_IP = #{record.requestIp,jdbcType=VARCHAR},
+      REQUEST_URI = #{record.requestUri,jdbcType=VARCHAR},
+      REQUEST_PATH = #{record.requestPath,jdbcType=VARCHAR},
+      EXCEPTION_CODE = #{record.exceptionCode,jdbcType=VARCHAR},
+      EXCEPTION_DETAIL = #{record.exceptionDetail,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      STATUS = #{record.status,jdbcType=VARCHAR},
+      CONTENT = #{record.content,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update log
+    set ID = #{record.id,jdbcType=CHAR},
+      APP_NAME = #{record.appName,jdbcType=CHAR},
+      LOG_TYPE = #{record.logType,jdbcType=INTEGER},
+      USER = #{record.user,jdbcType=VARCHAR},
+      METHOD_NAME = #{record.methodName,jdbcType=VARCHAR},
+      REQUEST_PARAMS = #{record.requestParams,jdbcType=VARCHAR},
+      METHOD_DESCRIPTION = #{record.methodDescription,jdbcType=VARCHAR},
+      REQUEST_IP = #{record.requestIp,jdbcType=VARCHAR},
+      REQUEST_URI = #{record.requestUri,jdbcType=VARCHAR},
+      REQUEST_PATH = #{record.requestPath,jdbcType=VARCHAR},
+      EXCEPTION_CODE = #{record.exceptionCode,jdbcType=VARCHAR},
+      EXCEPTION_DETAIL = #{record.exceptionDetail,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      STATUS = #{record.status,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sojson.common.model.Log" >
+    update log
+    <set >
+      <if test="appName != null" >
+        APP_NAME = #{appName,jdbcType=CHAR},
+      </if>
+      <if test="logType != null" >
+        LOG_TYPE = #{logType,jdbcType=INTEGER},
+      </if>
+      <if test="user != null" >
+        USER = #{user,jdbcType=VARCHAR},
+      </if>
+      <if test="methodName != null" >
+        METHOD_NAME = #{methodName,jdbcType=VARCHAR},
+      </if>
+      <if test="requestParams != null" >
+        REQUEST_PARAMS = #{requestParams,jdbcType=VARCHAR},
+      </if>
+      <if test="methodDescription != null" >
+        METHOD_DESCRIPTION = #{methodDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="requestIp != null" >
+        REQUEST_IP = #{requestIp,jdbcType=VARCHAR},
+      </if>
+      <if test="requestUri != null" >
+        REQUEST_URI = #{requestUri,jdbcType=VARCHAR},
+      </if>
+      <if test="requestPath != null" >
+        REQUEST_PATH = #{requestPath,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionCode != null" >
+        EXCEPTION_CODE = #{exceptionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionDetail != null" >
+        EXCEPTION_DETAIL = #{exceptionDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        CONTENT = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.sojson.common.model.Log" >
+    update log
+    set APP_NAME = #{appName,jdbcType=CHAR},
+      LOG_TYPE = #{logType,jdbcType=INTEGER},
+      USER = #{user,jdbcType=VARCHAR},
+      METHOD_NAME = #{methodName,jdbcType=VARCHAR},
+      REQUEST_PARAMS = #{requestParams,jdbcType=VARCHAR},
+      METHOD_DESCRIPTION = #{methodDescription,jdbcType=VARCHAR},
+      REQUEST_IP = #{requestIp,jdbcType=VARCHAR},
+      REQUEST_URI = #{requestUri,jdbcType=VARCHAR},
+      REQUEST_PATH = #{requestPath,jdbcType=VARCHAR},
+      EXCEPTION_CODE = #{exceptionCode,jdbcType=VARCHAR},
+      EXCEPTION_DETAIL = #{exceptionDetail,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CONTENT = #{content,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sojson.common.model.Log" >
+    update log
+    set APP_NAME = #{appName,jdbcType=CHAR},
+      LOG_TYPE = #{logType,jdbcType=INTEGER},
+      USER = #{user,jdbcType=VARCHAR},
+      METHOD_NAME = #{methodName,jdbcType=VARCHAR},
+      REQUEST_PARAMS = #{requestParams,jdbcType=VARCHAR},
+      METHOD_DESCRIPTION = #{methodDescription,jdbcType=VARCHAR},
+      REQUEST_IP = #{requestIp,jdbcType=VARCHAR},
+      REQUEST_URI = #{requestUri,jdbcType=VARCHAR},
+      REQUEST_PATH = #{requestPath,jdbcType=VARCHAR},
+      EXCEPTION_CODE = #{exceptionCode,jdbcType=VARCHAR},
+      EXCEPTION_DETAIL = #{exceptionDetail,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

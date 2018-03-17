@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd 
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd ">
+		
+	<!--<bean id="apiProcessAdvice" class="com.cib.fintech.ifp.common.api.aop.ProcessAdvice" />-->
+	
+	<!--<aop:config proxy-target-class="true">-->
+		<!--<aop:aspect ref="apiProcessAdvice">-->
+			<!--<aop:pointcut id="apiLogPointcut" expression="execution(* com.cib.fintech.ifp.user.api.impl.*.*(..))" />-->
+			<!--<aop:around pointcut-ref="apiLogPointcut" method="doAround"  />-->
+		<!--</aop:aspect>-->
+	<!--</aop:config>-->
+	<!---->
+
+	<!-- 启动对@AspectJ注解的支持 -->
+	<aop:aspectj-autoproxy/>
+
+	<!-- 通知spring使用cglib而不是jdk的来生成代理方法 AOP可以拦截到Controller -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
+	<bean id="systemAspectLogger" class="com.sojson.aop.SystemLogAspect"></bean>
+</beans>
